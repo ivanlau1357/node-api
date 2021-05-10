@@ -15,4 +15,4 @@ EXPOSE 5000
 
 COPY . /app
 
-CMD ["nodemon", "app.js"]
+CMD ["npm", "run", "start"]

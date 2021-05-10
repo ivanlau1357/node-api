@@ -25,7 +25,8 @@ class App {
 
   async connectMongoDB() {
     try {
-      await mongoose.connect(process.env.DB_HOST, {
+      const connectionString = process.env.DB_HOST || "mongodb://hktv-comms:hktv-comms@localhost:27017/hktv-comms?authSource=hktv-comms"
+      await mongoose.connect(connectionString, {
         useCreateIndex: true,
         useNewUrlParser: true,
         useUnifiedTopology: true
