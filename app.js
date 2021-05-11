@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const logger = require('./loggerConfig/logger')
 const { routes } = require('./routeConfig/routes')
 const mongoose = require('mongoose');
 require('dotenv').config()
@@ -43,7 +44,12 @@ class App {
 
     this.app.listen(5000, () => {
       // eslint-disable-next-line no-console
-      console.log('====Start Server====')
+      logger.log('info', {
+        category: 'server log',
+        payload: {
+          test: 'i am test payload'
+        }
+      });
     })
   }
 }
