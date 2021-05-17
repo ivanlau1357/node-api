@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router()
+const path = require('path');
 const logger = require('./loggerConfig/logger')
 const { routes } = require('./routeConfig/routes')
 const mongoose = require('mongoose');
+const { MongoClient } = require('mongodb');
 require('dotenv').config()
 
 
@@ -43,6 +45,55 @@ class App {
     } catch(e) {
       throw new Error(`DB connection fail, with error ${e}`)
     }
+  }
+
+  async executeOperation({ operationId, isExecRun = false, operationFile }) {
+    const client = await MongoClient.connect(process.env.DB_HOST, { useNewUrlParser: true,  useUnifiedTopology: true}).catch(err => console.log(err));
+    const db = client.db(process.env.DATABASE);
+
+    logger.log('info', {
+      category: 'operation',
+      operationId,
+      operationFile,
+      action: 'ready',
+    })
+
+    const operationPath = path.resolve(process.cwd(), './operations', `./${operationId}`, './Operation.js')
+    const Operation = require(operationPath)
+    const operation = new Operation(db)
+
+    logger.log('info', {
+      category: 'operation',
+      operationId,
+      operationFile,
+      action: isExecRun ? 'run' : 'testRun',
+    })
+
+    try {
+      if (isExecRun) {
+        await operation.run(operationFile)
+      } else {
+        await operation.testRun(operationFile)
+      }
+    } catch (e) {
+      logger.log('error', {
+        category: 'operation',
+        error: e,
+      })
+      console.log(e);
+    }
+    logger.log('info', {
+      category: 'operation',
+      operationId,
+      action: 'done',
+    })
+    await client.close();
+    logger.log('info', {
+      category: 'operation',
+      operationId,
+      action: 'disconnect mongo',
+    })
+    return this
   }
 
   async startServer() {
