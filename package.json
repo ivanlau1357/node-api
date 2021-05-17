@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "node_modules/.bin/eslint ."
+    "lint": "node_modules/.bin/eslint .",
+    "asyncConsole": "node --experimental-repl-await ./asyncConsole.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
     "eslint-plugin-import": "^2.22.0",
     "express": "^4.17.1",
     "log4js": "^6.3.0",
+    "mongodb": "^3.6.3",
     "mongoose": "^5.12.7",
     "nodemon": "^2.0.4",
     "winston": "^3.3.3"

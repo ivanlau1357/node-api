@@ -26,13 +26,20 @@ class App {
 
   async connectMongoDB() {
     try {
-      const connectionString = process.env.DB_HOST || "mongodb://hktv-comms:hktv-comms@localhost:27017/hktv-comms?authSource=hktv-comms"
+      const connectionString = process.env.DB_HOST || "mongodb://hktv-comms:hktv-comms@localhost:27017/hktv-comms"
       await mongoose.connect(connectionString, {
         useCreateIndex: true,
         useNewUrlParser: true,
         useUnifiedTopology: true
       })
-      console.log("MongoDb Connected")
+
+      logger.log('info', {
+        category: 'server log',
+        payload: {
+          test: 'i am test payload',
+          DBhost: process.env.DB_HOST
+        }
+      });
     } catch(e) {
       throw new Error(`DB connection fail, with error ${e}`)
     }
@@ -47,7 +54,8 @@ class App {
       logger.log('info', {
         category: 'server log',
         payload: {
-          test: 'i am test payload'
+          test: 'i am test payload',
+          DBhost: process.env.DB_HOST
         }
       });
     })
@@ -56,3 +64,5 @@ class App {
 
 const app = new App()
 app.startServer()
+
+module.exports = app;

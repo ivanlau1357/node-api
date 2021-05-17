@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const HealthSchema = new Schema({
+const LabelSchema = new Schema({
     name: { type: String, required: true },
 });
 
-class Health {
+class Label {
     // constructor(modelName = 'health') {
     //   this.model = new mongoose.model(modelName, HealthSchema);
     // }
 
-    static model = new mongoose.model('health', HealthSchema)
+    static model = new mongoose.model('label', LabelSchema)
   
-    static async getAllHealths() {
+    static async getAllLabels() {
       let result;
       try {
         result = await this.model.find({});
@@ -25,11 +25,11 @@ class Health {
 
     static async insertOne(obj) {
       const { name } = obj
-      const health = new this.model({
+      const label = new this.model({
         name,
       })
-      return health.save();
+      return label.save();
     }
   }
   
-  module.exports = Health;
+  module.exports = Label;

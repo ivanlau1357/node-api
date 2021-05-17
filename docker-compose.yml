@@ -5,6 +5,8 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+    environment:
+      DB_HOST: "mongodb://hktv-comms:hktv-comms@mongo:27017/hktv-comms?authSource=hktv-comms"
     ports:
       - "5000:5000"
     command: bash -c "nodemon app.js"
@@ -23,4 +25,4 @@ services:
 
 volumes:
   mongodb:
-    driver: local
+    driver: localhost
